@@ -1,0 +1,3 @@
+# port 번호 따로 설정방법
+server :
+  port : 8080
