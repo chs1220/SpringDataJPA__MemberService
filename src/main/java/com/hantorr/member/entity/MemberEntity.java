@@ -14,6 +14,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @AllArgsConstructor
 @ToString
+@Table(name = "member_table")
 public class MemberEntity {
     // Entity == DB 테이블 객체라고 생각하면 됨
 
@@ -31,47 +32,47 @@ public class MemberEntity {
     private String memberPw;
     // 별도의 크기 지정 없다면 255 지정
 
-    private MemberEntity(Builder builder){
-        this.id = null;
+    private MemberEntity() {
+    }
+
+    public MemberEntity(MemberEntityBuilder builder) {
+        this.id = builder.id;
         this.memberEmail = builder.memberEmail;
         this.memberName = builder.memberName;
         this.memberPw = builder.memberPw;
-        System.out.println("MemberEntity() : "+this.toString());
     }
 
 
-    public static class Builder{
+    public static class MemberEntityBuilder {
 
         private Long id;
-
         private String memberEmail;
-
         private String memberName;
-
         private String memberPw;
 
         //Builder생성자
 
-        public Builder(String memberEmail) {
-            this.id = null;
+        public MemberEntityBuilder(String memberEmail) {
             this.memberEmail = memberEmail;
-            System.out.println("Builder : "+ this.memberEmail);
         }
 
-        public Builder memberName(String memberEmail) {
-            this.memberEmail = memberName;
+        public MemberEntityBuilder memberName(String memberName) {
+            this.memberName = memberName;
             return this;
         }
 
-        public Builder memberPw(String memberPw) {
-            this.memberEmail = memberPw;
+        public MemberEntityBuilder memberPw(String memberPw) {
+            this.memberPw = memberPw;
+            return this;
+        }
+
+        public MemberEntityBuilder memberId(Long id) {
+            this.id = id;
             return this;
         }
 
 
-
-        public MemberEntity build(){
-            System.out.println("build() : "+ this.memberEmail);
+        public MemberEntity build() {
             return new MemberEntity(this);
         }
 

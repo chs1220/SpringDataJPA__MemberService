@@ -1,15 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>save</title>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 <body>
     <form action="/member/save" method="post">
-        이름 : <input type="text" name="memberName" ><br>
-        아메일 : <input type="text" name="memberEmail" ><br>
+        아메일 : <input type="text" name="memberEmail" id="memberEmail" onkeyup="emailCheck()"><br>
+        <p id="checkResult"></p>
         비밀번호 : <input type="password" name="memberPw" ><br>
+        이름 : <input type="text" name="memberName" ><br>
         <input type="submit" value="회원가입">
     </form>
 </body>
+
+
+<script th:inline="javascript">
+
+    const emailCheck =()=> {
+        const email = document.getElementById("memberEmail").value;
+        const checkResult = document.getElementById("checkResult");
+        $.ajax({
+            type:"post",
+            url:"/member/emailCheck",
+            data: {
+                "memberEmail": email
+            },
+            success: function(res){
+               if(res == "ok"){
+               checkResult.style.color = "green";
+               checkResult.innerHTML = "사용 가능한 이메일입니다.";
+               }else{
+               checkResult.style.color = "red";
+               checkResult.innerHTML = "이미 사용중인 이메일입니다.";
+               }
+            },
+            error: function(err){
+                console.log("에러발생",err);
+            }
+        });
+    }
+</script>
 </html>
